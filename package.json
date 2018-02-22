@@ -1,0 +1,23 @@
+{
+  "name": "quicknavi",
+  "version": "5.6.0",
+  "description": "Quick Navigation",
+  "main": "index.js",
+  "dependencies": {
+    "elasticsearch": "^14.0.0",
+    "ldapjs": "^1.0.2",
+    "prop-types": "^15.6.0",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-modal": "^2.2.4",
+    "react-redux": "^5.0.6",
+    "react-sanfona": "^1.0.6",
+    "react-select": "^1.0.0-rc.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.0.1"
+  },
+  "keywords": [
+    "kibana",
+    "kibana-plugin"
+  ]
+}

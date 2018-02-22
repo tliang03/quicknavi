@@ -1,0 +1,80 @@
+.react-sanfona {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 70px;
+}
+
+.react-sanfona-item {
+  border-bottom: 1px solid #ebf7fa;
+}
+
+.react-sanfona-item-title {
+  color: white;
+  background: #e8488b;
+  /* Old browsers */
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(#e8488b), color-stop(0.47, #ebf7fa), color-stop(0.91, #6EADC1));
+  background: -webkit-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: -moz-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: -o-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8488b', endColorstr='#6EADC1', GradientType=1);
+  padding: 15px;
+  text-transform: uppercase;
+  transition: background-color .3s;
+  cursor: pointer;
+}
+
+.react-sanfona-item:first-child .react-sanfona-item-title {
+  border-top: none;
+  max-height: fit-content;
+  overflow: auto;
+}
+
+.react-sanfona-item-expanded .react-sanfona-item-title {
+  .title-done-btn {
+    display: inline-block;
+    float: right;
+    color: #000;
+  }
+}
+
+.react-sanfona-item-body-wrapper {
+  color: #666;
+  padding: 20px;
+  position: relative;
+}
+
+.react-sanfona-item-body-wrapper:hover .tooltip {
+  opacity: 1;
+}
+
+.dash_detailtable {
+  width: 100%;
+  font-size: 15px;
+}
+
+.dash_detailtable td {
+  padding-bottom: 10px;
+}
+
+.dash_detailtable td a {
+  color: #1763a6
+}
+
+.dash_detailtable .title {
+  width: 30%;
+}
+
+.dash_detailtable .title {}
+
+.dash_detailtable .buttons {
+  width: 5%;
+}
+
+.titleIcon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding-right: 10px;
+  vertical-align: middle;
+}

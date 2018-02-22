@@ -1,0 +1,52 @@
+.hidden {
+  display: none;
+}
+
+.dashIcon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dashRank {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+.loadingImg {
+  position: fixed;
+  top: 45%;
+  z-index: 1;
+}
+
+.emptyMessage {
+  position: relative;
+  padding-top: 20%;
+  text-align: center;
+  width: 100%;
+  font-size: 25px;
+  color: #999;
+}
+
+.emptyMessage img {
+  padding: 0 10px;
+}
+
+.dash_header {
+  text-align: center;
+  font-size: 25px;
+  color: #999;
+  padding: 10px;
+}
+
+.stroke {
+  height: 5px;
+  background: #e8488b;
+  /* Old browsers */
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(#e8488b), color-stop(0.47, #ebf7fa), color-stop(0.91, #6EADC1));
+  background: -webkit-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: -moz-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: -o-linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  background: linear-gradient(left, #e8488b 0%, #ebf7fa 47%, #6EADC1 91%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8488b', endColorstr='#6EADC1', GradientType=1);
+}
