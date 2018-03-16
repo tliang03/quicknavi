@@ -20,7 +20,7 @@ export default class AddDashboardForm extends Component {
       selected_title: null,
       selected_link: null,
       selected_section: null,
-      selected_groups:[],
+      selected_roles:[],
       selected_item:{},
       sections: sectionArr
     }
@@ -52,8 +52,8 @@ export default class AddDashboardForm extends Component {
         var value = option ? option.value : null;
         this.setState({ selected_section: value});
         break;
-      case 'group':
-        // this.setState({ newItem.: option});
+      case 'role':
+        this.setState({ selected_roles: option});
         break;
       default:
         return;
@@ -74,7 +74,7 @@ export default class AddDashboardForm extends Component {
   handleOnAdd() {
     let newDashboard = {
       section: this.state.selected_section,
-      groups: this.state.selected_groups,
+      roles: this.props.hasXpack ? _getAllRoles(this.state.selected_roles, this.props.roles): ['all'],
       dashboard_id: this.state.selected_id,
       dashboard_title: this.state.selected_title,
       dashboard_link: this.state.selected_link,
@@ -160,6 +160,19 @@ export default class AddDashboardForm extends Component {
             <div className="popupSubInfo">{this.state.selected_description}</div>
           </div>
         </div>
+        <div className={`${this.props.hasXpack ? '': 'hidden'} popupSection`}>
+          <div className="popupSubTitle">Roles</div>
+          <Select
+            name="form-field-name"
+            multi={true}
+            value={this.state.selected_roles}
+            placeholder="Select One Opiton Or Type to Create New"
+            onChange={(option)=>{
+              this.handleSelectionChange('role', option)
+            }}
+            options={this.props.roles}
+          />
+        </div>
         <div className="popupSection">
           <button className="popupButton" onClick={this.handleOnCancel}>Cancel</button>
           <button className="popupButton" onClick={this.handleOnAdd}>Add</button>
@@ -170,15 +183,16 @@ export default class AddDashboardForm extends Component {
 }
 
 AddDashboardForm.propTypes = {
+  hasXpack: PropTypes.bool,
   handleOnAdd: PropTypes.func,
   handleOnCancel: PropTypes.func,
   dashboards: PropTypes.array,
-  groups: PropTypes.array,
+  roles: PropTypes.array,
   sections: PropTypes.array,
   error: PropTypes.string
 };
 
-var _validateSelection = function(dashboard){
+var _validateSelection = (dashboard, hasXpack) => {
   var error = []
   if(!dashboard.section){
     error.push('Please select section');
@@ -186,9 +200,23 @@ var _validateSelection = function(dashboard){
   if(!dashboard.dashboard_id){
     error.push('Please select dashboard');
   }
-  // if(dashboard.groups.length === 0){
-  //   error.push('Please select groups');
-  // }
+  if(hasXpack && dashboard.roles.length === 0){
+    error.push('Please select roles');
+  }
 
   return error;
+}
+
+var _getAllRoles = (stateRoles, roles) => {
+  let filteredAllRoles = stateRoles.filter((role) => {
+    return role.value === 'all';
+  });
+  let hasAllRoles = filteredAllRoles.length;
+  if(hasAllRoles) {
+    return filteredAllRoles;
+  } else {
+    return stateRoles.filter((role) => {
+      return role.value !== 'all';
+    });
+  }
 }

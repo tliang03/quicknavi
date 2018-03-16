@@ -1,6 +1,7 @@
 //Library
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 //Actions Entry
 import * as actions from '../actions'
 //CSS Styles
@@ -12,11 +13,12 @@ import List from './dashlist';
 import Modal from 'react-modal';
 
 const mapStateToProps = (state) => {
-  const { dashboards, ranklist, groups, error } = state;
+  const { dashboards, ranklist, roles, sections, error } = state;
   return {
     dashboards: dashboards,
     ranklist: ranklist,
-    groups: groups,
+    roles: roles,
+    sections: sections,
     error: error
   };
 };
@@ -35,8 +37,11 @@ const mapDispatchToProps = (dispatch) => {
     _searchAllDashboards: () => {
       return dispatch(actions.searchAllDashboards())
     },
-    _searchAllGroups: () => {
-      return dispatch(actions.searchAllGroups())
+    _searchAllRoles: () => {
+      return dispatch(actions.searchAllRoles())
+    },
+    _searchAllSections: () => {
+      return dispatch(actions.searchAllSections())
     }
   };
 }
@@ -60,31 +65,43 @@ class DashboardRank extends Component {
   }
 
   initializeList(){
-    let self = this;
     this.props._searchAllList().then(()=>{
-      if(self.props.error) {
-        self.showErrorPopup(self.props.error);
+      if(this.props.error) {
+        this.showErrorPopup(this.props.error);
+        return;
       }
       this.setState({
         expandedSection: Object.keys(this.props.ranklist)
       })
+    }, ()=> {
+      if(this.props.error) {
+        this.showErrorPopup(this.props.error);
+      }
     })
   }
 
   initializePopup() {
-    return Promise.all([
+    let promises = [
       this.props._searchAllDashboards(),
-      this.props._searchAllGroups()
-    ]);
+      this.props._searchAllSections()]
+    if(this.props.hasXpack) {
+      promises.push(this.props._searchAllRoles())
+    }
+    return Promise.all(promises);
   }
 
   addDashboard(newItem){
     return this.props._addDashboard(this.props.ranklist, newItem).then(()=>{
+      if(this.props.error) {
+        this.showErrorPopup(this.props.error);
+        return;
+      }
       this.setState({
         expandedSection: [newItem.section]
       });
     })
   }
+
   deleteDashboard(key, section) {
     return this.props._deleteDashboard(key, section).then(()=>{
       if(this.props.error){
@@ -92,12 +109,14 @@ class DashboardRank extends Component {
       }
     });
   }
+
   showErrorPopup(msg){
     this.setState({
       hasError : true,
       errormsg: msg
     })
   }
+
   closeModal(){
     this.setState({
       hasError : false
@@ -108,11 +127,12 @@ class DashboardRank extends Component {
     return (
       <div className="dashRank" id="dashMain">
         <Header
+          hasXpack={this.props.hasXpack}
           dashboards={this.props.dashboards}
           error={this.props.error}
           adderror={this.props.error}
-          groups={this.props.groups}
-          sections={Object.keys(this.props.ranklist)}
+          roles={this.props.roles}
+          sections={this.props.sections}
           errormsg={this.state.errormsg}
           initialize={this.initializePopup}
           handleOnAdd={this.addDashboard}
@@ -146,6 +166,10 @@ class DashboardRank extends Component {
 
     );
   }
+}
+
+DashboardRank.propTypes = {
+  hasXpack: PropTypes.bool
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardRank);

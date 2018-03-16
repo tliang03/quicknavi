@@ -15,14 +15,15 @@ const store = configureStore();
 
 chrome
     .setRootTemplate(`<div id="root" class="quicknavi"></div>`)
-    .setRootController((docTitle) => {
+    .setRootController(($scope, docTitle, hasXpackInstalled) => {
         docTitle.change('quicknavi');
 
         // Mount the React app
         const el = document.getElementById('root');
         render(
             <Provider store={store}>
-              <DashboardRank />
+              <DashboardRank 
+                hasXpack={hasXpackInstalled}/>
             </Provider>, el);
 
     });

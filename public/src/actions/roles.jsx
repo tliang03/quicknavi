@@ -1,14 +1,13 @@
-
 const $ = require('jquery');
 
 const conf = {
-  "index" : ".kibana",
-  "doctype": "dashboard"
+  "index" : ".security",
+  "doctype_role": "role"
 }
 
-export function searchAllDashboards(query){
+export function searchAllRoles(query){
   return (dispatch) => {
-    const url = `../api/dashrank/dashboards?index=${conf["index"]}&type=${conf["doctype"]}` ;
+    const url = `../api/dashrank/roles?index=${conf["index"]}&type=${conf["doctype_role"]}` ;
     return $.ajax({
        url: url,
        type: "GET"
@@ -16,12 +15,12 @@ export function searchAllDashboards(query){
     .then((response) => {
       const res = JSON.parse(response);
       dispatch({
-        type: 'SEARCH_ALL_DASHBOARDS',
-        dashboards: res.hits.hits
+        type: 'SEARCH_ALL_ROLES',
+        roles: res.hits.hits
       });
     }, (error) => {
       dispatch({
-         type: 'ERROR_SEARCH',
+         type: 'ERROR_SEARCH_ROLES',
          errormsg: error.responseText
        });
     });

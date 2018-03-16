@@ -30,7 +30,8 @@ const isItemExist = (list, item)=>{
     }
   }
   return false;
-}
+};
+
 export function addDashboard(list, item) {
   if(isItemExist(list, item)){
     return (dispatch) => {
@@ -43,9 +44,13 @@ export function addDashboard(list, item) {
       })
     };
   }
+  const roles = item.roles.reduce((curr, role)=>{
+    return curr === '' ? role.value : curr + ','+ role.value;
+  }, '');
 
   return (dispatch) => {
     const url = '../api/dashrank/dashboard';
+
     return $.ajax({
       url: url,
       method: 'POST',
@@ -57,11 +62,20 @@ export function addDashboard(list, item) {
         dashboard_id: item.dashboard_id,
         dashboard_title: item.dashboard_title,
         dashboard_description: item.dashboard_description,
+        roles: roles,
         creation_ts: getDateWithFormat()
       }
     })
     .then((response) => {
       const res = JSON.parse(response);
+      if(res.errors) {
+        const errormsg = res.items[0].index.error.reason;
+        dispatch({
+         type: 'ERROR_ADD',
+         errormsg: errormsg
+       });
+       return;
+      }
       dispatch({
         type: 'ADD_DASHBOARD',
         dashboard: item,
@@ -88,6 +102,14 @@ export function deleteDashboard(id, section) {
     })
     .then((response) => {
       const res = JSON.parse(response);
+      if(res.errors) {
+        const errormsg = res.items[0].delete.error.reason;
+        dispatch({
+         type: 'ERROR_DELETE',
+         errormsg: errormsg
+       });
+       return;
+      }
       dispatch({
         type: 'DELETE_DASHBOARD',
         id: id,
@@ -118,6 +140,28 @@ export function searchAllList(){
     }, (error)=>{
         dispatch({
            type: 'ERROR_LIST',
+           errormsg: error.responseText
+         });
+      });
+  };
+}
+
+export function searchAllSections(){
+  return (dispatch) => {
+    const url = `../api/dashrank/section`;
+    return $.ajax({
+       url: url,
+       type: "GET"
+    })
+    .then((response) => {
+      const res = JSON.parse(response);
+      dispatch({
+        type: 'SEARCH_ALL_SECTIONS',
+        sections: res.aggregations.sections.buckets
+      });
+    }, (error)=>{
+        dispatch({
+           type: 'ERROR_SECTION',
            errormsg: error.responseText
          });
       });

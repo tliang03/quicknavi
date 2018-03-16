@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
 
-import groups from './groups';
+import roles from './roles';
 import dashboards from './dashboards';
 import ranklist from './ranklist';
+import sections from './sections';
 import error from './error';
 
 
 const rootReducer = combineReducers({
-  groups,
+  roles,
   dashboards,
   ranklist,
+  sections,
   error
 });
 

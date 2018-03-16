@@ -15,13 +15,12 @@ export default class Header extends Component {
       }
       this.openModal = this.openModal.bind(this);
       this.closeModal = this.closeModal.bind(this);
-      this.initialize = this.initialize.bind(this);
     }
     openModal() {
       this.setState({
         loadingClass: ''
       })
-      this.initialize().then(values => {
+      this.props.initialize().then((values) => {
         if(this.props.error) {
           this.props.handleError(this.props.error);
         } else {
@@ -37,9 +36,7 @@ export default class Header extends Component {
         modalIsOpen: false
       })
     }
-    initialize(){
-      return this.props.initialize();
-    }
+
     render() {
       return (
         <div className="dash_header">
@@ -58,9 +55,10 @@ export default class Header extends Component {
             overlayClassName={"popupOverlay"}
             >
             <AddDashboardForm
+              hasXpack={this.props.hasXpack}
               error={this.props.adderror}
               dashboards={this.props.dashboards}
-              groups={this.props.groups}
+              roles={this.props.roles}
               sections={this.props.sections}
               handleOnCancel={this.closeModal.bind(this)}
               handleOnAdd={this.props.handleOnAdd} />
@@ -71,8 +69,9 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
+  hasXpack: PropTypes.bool,
   dashboards: PropTypes.array,
-  groups: PropTypes.array,
+  roles: PropTypes.array,
   sections: PropTypes.array,
   handleOnAdd: PropTypes.func,
   handleError: PropTypes.func,
